@@ -4,4 +4,5 @@ version = "0.1.0"
 authors = ["Vikas Sahu <vikassahu2904@gmail.com>"]
 
 [dependencies]
-actix-web = "0.7"
+iron = "*"
+router = "*"
