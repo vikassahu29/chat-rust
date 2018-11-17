@@ -6,3 +6,5 @@ authors = ["Vikas Sahu <vikassahu2904@gmail.com>"]
 [dependencies]
 iron = "*"
 router = "*"
+persistent = "*"
+params = "*"
