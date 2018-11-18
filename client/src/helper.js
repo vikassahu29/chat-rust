@@ -24,6 +24,10 @@ export default {
                 });
             }
             localStorage.clear();
-      }
+        },
+        
+        getUsername: function() {
+            return localStorage.getItem("username");
+        }
     }
   }

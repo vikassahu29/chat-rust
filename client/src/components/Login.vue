@@ -43,6 +43,7 @@ export default {
             this.error = '';
             axios.post("/api/login", this.user).then((res) => {
                 localStorage.setItem("token", res.data.token);
+                localStorage.setItem("username", this.user.username);
                 this.$router.push("dashboard");
             }).catch((err)=> {
                 if (err.response.status == 400) {
@@ -57,7 +58,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 label {
     display: block;
     font-size: 9pt;
