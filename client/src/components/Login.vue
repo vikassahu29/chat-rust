@@ -1,6 +1,8 @@
 <template>
     <div class="Login">
+        
         <form @submit.prevent="handleSubmit">
+            <div class="error">{{error}}</div>
             <label>
                 Username:
                 <input type="text" v-model="user.username" required=true/>
@@ -15,26 +17,41 @@
 </template>
 <script>
 import axios from 'axios';
+import Helper from '../helper';
 
 export default {
+    mixins: [Helper],
     name: 'Login',
+    created() {
+        if (this.isLoggedIn()) {
+            this.$router.push("dashboard");
+        }
+    },
     data() {
         return {
             user: 
             {
-                name: '',
+                username: '',
                 password: ''
-            }
+            },
+            error: ''
         }
     },
 
     methods: {
         handleSubmit() {
+            this.error = '';
             axios.post("/api/login", this.user).then((res) => {
-                console.log(res);
+                localStorage.setItem("token", res.data.token);
+                this.$router.push("dashboard");
             }).catch((err)=> {
-                console.log(err);
-            })
+                if (err.response.status == 400) {
+                    this.error = err.response.data.message;
+                } else {
+                    this.error = "Please try after some time";
+                }
+
+            });
         }
     }
 }

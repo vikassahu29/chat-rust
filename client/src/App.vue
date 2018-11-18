@@ -2,16 +2,18 @@
   <div id="app">
     <nav>
       <router-link to="/">Home</router-link>
-      <router-link to="/login">Login</router-link>
+      <router-link to="/login" v-if="!isLoggedIn()">Login</router-link>
+      <a href="#" v-on:click="logout()" v-if="isLoggedIn()">Logout</a>
     </nav>
     <router-view/>
   </div>
 </template>
 
 <script>
-//import Home from './components/Home.vue'
+import Helper from './helper.js';
 
 export default {
+  mixins: [Helper],
   name: 'app',
 }
 </script>
@@ -44,5 +46,10 @@ nav a {
   color: rgb(0, 110, 255);
   font-weight: bold;
   margin-right: 15px;
+}
+
+.error {
+    color: red;
+    font-size: 10pt;
 }
 </style>
