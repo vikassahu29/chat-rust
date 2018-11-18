@@ -4,6 +4,7 @@ extern crate serde_derive;
 extern crate iron;
 extern crate persistent;
 extern crate hyper;
+extern crate uuid;
 
 #[macro_use]
 extern crate serde_json;

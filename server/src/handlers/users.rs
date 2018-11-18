@@ -4,8 +4,17 @@ use persistent::Write;
 use hyper::header::ContentType;
 use hyper::mime::{Mime, TopLevel, SubLevel, Attr, Value};
 use std::io::Read;
+use hyper::header::{Authorization, Bearer};
+use std::ops::Deref;
+use router::Router;
 
-pub fn register_handler(req: &mut Request) -> IronResult<Response> {
+pub fn attach(router: &mut Router) {
+    router.post("/api/register", register_handler, "register");
+    router.post("/api/login", login_handler, "login");
+    router.delete("/api/logout", logout_handler, "logout");
+}
+
+fn register_handler(req: &mut Request) -> IronResult<Response> {
     let mutex = req.get::<Write<::handlers::Data>>().unwrap();
     let mut app = mutex.lock().unwrap();
 
@@ -45,7 +54,7 @@ pub fn register_handler(req: &mut Request) -> IronResult<Response> {
     }
 }
 
-pub fn login_handler(req: &mut Request) -> IronResult<Response> {
+fn login_handler(req: &mut Request) -> IronResult<Response> {
     let mutex = req.get::<Write<::handlers::Data>>().unwrap();
     
     let mut app = mutex.lock().unwrap();
@@ -85,4 +94,16 @@ pub fn login_handler(req: &mut Request) -> IronResult<Response> {
             Ok(resp)            
         }
     }
+}
+
+fn logout_handler(req: &mut Request) -> IronResult<Response> {
+    let mutex = req.get::<Write<::handlers::Data>>().unwrap();
+    
+    let mut app = mutex.lock().unwrap();
+
+    if let Some(token) = req.headers.get::<Authorization<Bearer>>() { 
+        ::accounts::logout_user(&mut app, &token.deref().token);
+    }
+
+    Ok(Response::with(status::NoContent))
 }

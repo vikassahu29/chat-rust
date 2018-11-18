@@ -11,3 +11,4 @@ serde = "*"
 serde_derive = "*"
 serde_json = "*"
 hyper = "*"
+uuid = { version = "0.7", features = ["v4"] }

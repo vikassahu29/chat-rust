@@ -11,11 +11,18 @@ export default {
         },
 
         logout: function() {
-            Axios.delete("/api/logout").then(() => {
-                this.$router.push("home");
-            }).catch(() => {
-                this.$router.push("home");
-            });
+            let token = this.getToken();
+            if (token !== null) {
+                Axios.delete("/api/logout", {
+                    headers: {
+                        "authorization": "Bearer " + token
+                    }
+                }).then(() => {
+                    this.$router.push("/");
+                }).catch(() => {
+                    this.$router.push("/");
+                });
+            }
             localStorage.clear();
       }
     }
