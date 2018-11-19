@@ -3,6 +3,7 @@
     <nav>
       <router-link to="/">Home</router-link>
       <router-link to="/login" v-if="!isLoggedIn()">Login</router-link>
+      <router-link to="/register" v-if="!isLoggedIn()">Register</router-link>
       <a href="#" v-on:click="logout()" v-if="isLoggedIn()">Logout</a>
     </nav>
     <router-view/>
